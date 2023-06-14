@@ -37,7 +37,7 @@ Similar to link prediction task, we also remove all the transactions associated 
 Each line in the query graph file represent a vertex or an edge.
 
 * A vertex is represented by `v <vertex-id> <vertex-label>`.
-* An edge is represented by e `<vertex-id-1> <vertex-id-2> <edge-label>`.
+* An edge is represented by `e <vertex-id-1> <vertex-id-2> <edge-label>`.
 
 The two endpoints of an edge must appear before the edge. For example,
 ```
