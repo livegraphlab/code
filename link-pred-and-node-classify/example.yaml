@@ -1,0 +1,68 @@
+out_dir: results
+device: 'cuda:0'
+dataset:
+  split_method: 'default'
+  name: node-classification-data.csv 
+  dir: ./
+  node_label: ./node-label.csv
+  task: node
+  shuffle: True
+  task_type: classification
+  transductive: True
+  split: [0.8, 0.1, 0.1]
+  augment_feature: []
+  augment_feature_dims: [0]
+  augment_feature_repr: position
+  augment_label: ''
+  augment_label_dims: 0
+  transform: none
+  edge_encoder: True  # CONTROLLED_IN_GRID
+  edge_dim: 2  # CONTROLLED_IN_GRID, edge_dim in the raw dataset.
+  edge_encoder_name: roland_general
+  edge_encoder_bn: True
+  node_encoder: False
+  node_encoder_name: roland
+  node_encoder_bn: True
+train:
+  batch_size: 8
+  eval_period: 20
+  ckpt_period: 400
+  mode: live_update
+model:
+  type: gnn_recurrent
+  loss_fun: cross_entropy
+  edge_decoding: concat
+  graph_pooling: add
+transaction:
+  keep_ratio: linear
+  snapshot: True
+  snapshot_freq: W
+  check_snapshot: False
+  history: rolling
+  horizon: 1
+  pred_mode: at
+  loss: supervised
+  feature_int_dim: 16  # only used when one of init_num != [].
+  feature_edge_int_num: []  #
+  feature_node_int_num: []  # loader will set this if needed.
+  feature_amount_dim: 16
+  feature_time_dim: 16
+gnn:
+  embed_update_method: mlp # gru, moving_average
+  layers_pre_mp: 1
+  layers_mp: 2
+  layers_post_mp: 2
+  dim_inner: 16
+  layer_type: residual_edge_conv # evolve_gcn_h, evolve_gcn_o, tgcn, dcrnn, gconv_gru, gconv_lstm
+  skip_connection: affine
+  stage_type: stack
+  batchnorm: True
+  act: prelu
+  dropout: 0.0
+  agg: add
+  att_heads: 1
+  normalize_adj: False
+optim:
+  optimizer: adam
+  base_lr: 0.03
+  max_epoch: 100
